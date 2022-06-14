@@ -6,8 +6,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 def chrome_options(chrome_options):
-    chrome_options.set_headless(True)
-    return chrome_options
+   chrome_options.binary_location = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+   chrome_options.add_argument('--kiosk')
+   return chrome_options
 
 @pytest.fixture(autouse=True)
 def testing():
@@ -30,18 +31,18 @@ def test_show_my_pets():
    # Проверяем, что мы оказались на странице "мои питомцы"
    #assert pytest.driver.find_element_by_css_selector("html>body>div>div>div:nth-of-type(2)")
 
-#def test_my_pets():
+   def test_my_pets():
 
-   images = pytest.driver.find_elements_by_css_selector('div.all_my_pets>table>tbody>tr:nth-of-type(1)>th>img')
-   names = pytest.driver.find_elements_by_css_selector('.card-deck .card-img-top')
-   descriptions = pytest.driver.find_elements_by_css_selector('.card-deck .card-img-top')
+      images = pytest.driver.find_elements_by_css_selector('$$("div th img")')
+      #names = pytest.driver.find_elements_by_css_selector('$$("div tr td")')
+      #descriptions = pytest.driver.find_elements_by_css_selector('$$("div tr td:nth-of-type")')
 
-   for i in range(len(names)):
-      assert images[i].get_attribute('src') != ''
-      assert names[i].text != ''
-      assert descriptions[i].text != ''
-      assert ', ' in descriptions[i]
-      parts = descriptions[i].text.split(", ")
-      assert len(parts[0]) > 0
-      assert len(parts[1]) > 0
+      for i in range(len(names)):
+         assert images[i].get_attribute('src') != ''
+         #assert names[i].text != ''
+         #assert descriptions[i].text != ''
+         #assert ', ' in descriptions[i]
+         #parts = descriptions[i].text.split(", ")
+         #assert len(parts[0]) > 0
+         #assert len(parts[1]) > 0
 
