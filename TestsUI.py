@@ -32,7 +32,7 @@ def test_show_my_pets():
 
 #def test_my_pets():
 
-   images = pytest.driver.find_elements_by_css_selector('div#all_my_pets>table>tbody>tr:nth-of-type(1)>th>img')
+   images = pytest.driver.find_elements_by_css_selector('div.all_my_pets>table>tbody>tr:nth-of-type(1)>th>img')
    names = pytest.driver.find_elements_by_css_selector('.card-deck .card-img-top')
    descriptions = pytest.driver.find_elements_by_css_selector('.card-deck .card-img-top')
 
