@@ -18,8 +18,8 @@ def testing():
    yield
    pytest.driver.quit()
 
-
-def test_show_my_pets():
+# Проверка страницы "мои питомцы"
+def test_my_pets():
    # Вводим email
    pytest.driver.find_element_by_id('email').send_keys('dima-pinsk@mail.ru')
    # Вводим пароль
@@ -29,19 +29,22 @@ def test_show_my_pets():
    # Нажимаем на кнопку "мои питомцы"
    pytest.driver.find_element_by_xpath("//a[@class='nav-link']").click()
    # Проверяем, что мы оказались на странице "мои питомцы"
-   #assert pytest.driver.find_element_by_css_selector("html>body>div>div>div:nth-of-type(2)")
+   assert pytest.driver.find_element_by_css_selector("html>body>div>div>div:nth-of-type(2)")
 
-   images = pytest.driver.find_elements_by_css_selector('div.img')
-   names = pytest.driver.find_elements_by_css_selector('div.td')
-   descriptions = pytest.driver.find_elements_by_css_selector('div.td')
+   # Для css - $$("")
+   # Получаем все фотографии питомцев на странице
+   images = pytest.driver.find_elements_by_css_selector('div th > img')
+   # Получаем всю информацию о питомцах на странице
+   pets_info = pytest.driver.find_elements_by_css_selector('div td')
+   # Сортируем информацию о питомцах и записываем в отдельные переменные
+   names = pets_info[::5]
+   breeds = pets_info[1::5]
+   ages = pets_info[2::5]
+
+   # Проверяем, что у питомцев присутствуют: фотография, имя, порода и возраст
    for i in range(len(names)):
-      assert images[i].get_attribute('img') == ''
+      assert images[i].get_attribute('img') != ''
       assert names[i].text != ''
-      assert descriptions[i].text != ''
-      assert ', ' in descriptions[i]
-      parts = descriptions[i].text.split(", ")
-      assert len(parts[0]) > 0
-      assert len(parts[1]) > 0
-      assert len(parts[2]) > 0
-      assert len(parts[3]) > 0
+      assert breeds[i].text != ''
+      assert ages[i].text != ''
 
