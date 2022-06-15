@@ -31,18 +31,17 @@ def test_show_my_pets():
    # Проверяем, что мы оказались на странице "мои питомцы"
    #assert pytest.driver.find_element_by_css_selector("html>body>div>div>div:nth-of-type(2)")
 
-   def test_my_pets():
-
-      images = pytest.driver.find_elements_by_css_selector('$$("div th img")')
-      #names = pytest.driver.find_elements_by_css_selector('$$("div tr td")')
-      #descriptions = pytest.driver.find_elements_by_css_selector('$$("div tr td:nth-of-type")')
-
-      for i in range(len(names)):
-         assert images[i].get_attribute('src') != ''
-         #assert names[i].text != ''
-         #assert descriptions[i].text != ''
-         #assert ', ' in descriptions[i]
-         #parts = descriptions[i].text.split(", ")
-         #assert len(parts[0]) > 0
-         #assert len(parts[1]) > 0
+   images = pytest.driver.find_elements_by_css_selector('div.img')
+   names = pytest.driver.find_elements_by_css_selector('div.td')
+   descriptions = pytest.driver.find_elements_by_css_selector('div.td')
+   for i in range(len(names)):
+      assert images[i].get_attribute('img') == ''
+      assert names[i].text != ''
+      assert descriptions[i].text != ''
+      assert ', ' in descriptions[i]
+      parts = descriptions[i].text.split(", ")
+      assert len(parts[0]) > 0
+      assert len(parts[1]) > 0
+      assert len(parts[2]) > 0
+      assert len(parts[3]) > 0
 
