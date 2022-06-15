@@ -41,10 +41,19 @@ def test_my_pets():
    breeds = pets_info[1::5]
    ages = pets_info[2::5]
 
+   #body > div.task2.fill > div > div.\.col-sm-4.left
+   #amount = pytest.driver.find_elements_by_css_selector('//*[contains(text(), “Питомцев:”)]')
+   #print('amount')
    # Проверяем, что у питомцев присутствуют: фотография, имя, порода и возраст
    for i in range(len(names)):
+      # Проверяем, что у питомцев присутствуют: фотография
       assert images[i].get_attribute('img') != ''
+      # Проверяем, что у всех питомцев присутствует имя
       assert names[i].text != ''
+      # Проверяем, что у всех питомцев присутствует порода
       assert breeds[i].text != ''
+      # Проверяем, что у всех питомцев присутствует возраст
       assert ages[i].text != ''
+
+      #assert amount[i].text != ''
 
