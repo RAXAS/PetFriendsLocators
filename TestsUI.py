@@ -30,27 +30,28 @@ def test_my_pets():
    # Нажимаем на кнопку "мои питомцы"
    pytest.driver.find_element_by_xpath("//a[@class='nav-link']").click()
    # Проверяем, что мы оказались на странице "мои питомцы"
-   assert pytest.driver.find_element_by_css_selector("html>body>div>div>div:nth-of-type(2)")
-
-   # Для поиска css - $$("")
+   #assert pytest.driver.find_element_by_css_selector("html>body>div>div>div:nth-of-type(2)")
+   assert WebDriverWait(driver, 10).until(EC.presence_of_element_located([By.xPath, "body/div[1]/div[1]/div[2]"]))
    # Получаем все фотографии питомцев на странице
    images = pytest.driver.find_elements_by_css_selector('div th > img')
    # Получаем всю информацию о питомцах на странице
    pets_info = pytest.driver.find_elements_by_css_selector('div td')
    # Сортируем информацию о питомцах и записываем в отдельные переменные
-   names = pets_info[::5]
-   breeds = pets_info[1::5]
-   ages = pets_info[2::5]
+   names = pets_info[::4]
+   breeds = pets_info[1::4]
+   ages = pets_info[2::4]
    # Получаем информацию профиля и записываем в переменную
    amount = pytest.driver.find_elements_by_css_selector('html > body > div > div > div')
    # Создаём переменную для подсчёта колличества питомцев с фото
    pets_with_photo = 0
-   # Создаём пустой список, в которые будем записывать имена питомцев
+   # Создаём пустой список, в которые будем записывать имена всех питомцев
    list_names = []
+   # Создаём пустой список, в который будем записывать всю информацию о каждом питомце
+   all_pets = []
 
    for i in range(len(names)):
-      # Записываем колличество питомцев с фотографией
-      if images[i].get_attribute('img') != '':
+      # Проверяем, какое колличество питомцев с фотографией
+      if images[i].get_attribute('scr') != '':
          pets_with_photo += 1
       # Проверяем, что у всех питомцев присутствует имя
       assert names[i].text != ''
@@ -60,20 +61,17 @@ def test_my_pets():
       assert ages[i].text != ''
       # Добавляем имена питомцев в список
       list_names.append(names[i].text)
+      # Добавляем имена + породы + возраст каждого питомца в список
+      all_pets.append(names[i].text + breeds[i].text + ages[i].text)
+   # Проверяем, что нет повторяющихся питомцев
+   assert len(Counter(all_pets)) == len(all_pets)
    # Проверяем, что имя каждого животного уникально
-   #for i in range(len(names)):
-      #a = Counter(list_names)
-      #print(a[i])
-      #assert Counter(list_names)[i] == 1
-
-
-
+   assert len(Counter(list_names)) == len(list_names)
    # Проверяем, что количество строк таблицы соответствует количеству питомцев в блоке статистики пользователя
    assert f"Питомцев: {len(names)}" in amount[0].text
    # Проверяем, что минимум у половины питомцев присутствует фотография
    assert pets_with_photo >= len(names) / 2
-   # Проверяем, что у каждого питомца разное имя
-   #assert
+
 
 
 
