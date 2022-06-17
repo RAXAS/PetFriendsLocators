@@ -14,8 +14,8 @@ def chrome_options(chrome_options):
 @pytest.fixture(autouse=True)
 def testing():
    pytest.driver = webdriver.Chrome('C:/Program Files/ChromeDriver/chromedriver.exe')
-   # Переходим на страницу авторизации
    pytest.driver.implicitly_wait(10)
+   # Переходим на страницу авторизации
    pytest.driver.get('https://petfriends.skillfactory.ru/login')
    yield
    pytest.driver.quit()
