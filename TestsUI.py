@@ -15,6 +15,7 @@ def chrome_options(chrome_options):
 def testing():
    pytest.driver = webdriver.Chrome('C:/Program Files/ChromeDriver/chromedriver.exe')
    # Переходим на страницу авторизации
+   pytest.driver.implicitly_wait(10)
    pytest.driver.get('https://petfriends.skillfactory.ru/login')
    yield
    pytest.driver.quit()
@@ -27,11 +28,12 @@ def test_my_pets():
    pytest.driver.find_element_by_id('pass').send_keys('nanotehnik444')
    # Нажимаем на кнопку входа в аккаунт
    pytest.driver.find_element_by_css_selector('button[type="submit"]').click()
+   # Проверяем, что мы оказались на странице "все питомцы"
+   assert WebDriverWait(pytest.driver, 10).until(EC.presence_of_element_located([By.CSS_SELECTOR, "html > body > div > div > div:nth-of-type(2)"]))
    # Нажимаем на кнопку "мои питомцы"
    pytest.driver.find_element_by_xpath("//a[@class='nav-link']").click()
    # Проверяем, что мы оказались на странице "мои питомцы"
-   #assert pytest.driver.find_element_by_css_selector("html>body>div>div>div:nth-of-type(2)")
-   assert WebDriverWait(driver, 10).until(EC.presence_of_element_located([By.xPath, "body/div[1]/div[1]/div[2]"]))
+   assert WebDriverWait(pytest.driver, 10).until(EC.presence_of_element_located([By.CSS_SELECTOR, "div#all_my_pets > table"]))
    # Получаем все фотографии питомцев на странице
    images = pytest.driver.find_elements_by_css_selector('div th > img')
    # Получаем всю информацию о питомцах на странице
@@ -50,8 +52,8 @@ def test_my_pets():
    all_pets = []
 
    for i in range(len(names)):
-      # Проверяем, какое колличество питомцев с фотографией
-      if images[i].get_attribute('scr') != '':
+      # Проверяем, какое колличество питомцев с фотографией и записываем колличество в переменную
+      if images[i].get_attribute('src') != '':
          pets_with_photo += 1
       # Проверяем, что у всех питомцев присутствует имя
       assert names[i].text != ''
@@ -71,6 +73,8 @@ def test_my_pets():
    assert f"Питомцев: {len(names)}" in amount[0].text
    # Проверяем, что минимум у половины питомцев присутствует фотография
    assert pets_with_photo >= len(names) / 2
+
+
 
 
 
