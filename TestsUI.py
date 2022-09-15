@@ -23,9 +23,9 @@ def testing():
 # Проверка страницы "мои питомцы"
 def test_my_pets():
    # Вводим email
-   pytest.driver.find_element_by_id('email').send_keys('dima-pinsk@mail.ru')
+   pytest.driver.find_element_by_id('email').send_keys('xxxxx@mail.ru')
    # Вводим пароль
-   pytest.driver.find_element_by_id('pass').send_keys('nanotehnik444')
+   pytest.driver.find_element_by_id('pass').send_keys('1234')
    # Нажимаем на кнопку входа в аккаунт
    pytest.driver.find_element_by_css_selector('button[type="submit"]').click()
    # Проверяем, что мы оказались на странице "все питомцы"
